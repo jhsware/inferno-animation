@@ -10,7 +10,7 @@ NOTE: Make sure you set a `key` for the component or it won't be animated proper
 You can use this to animate single components or components in a list.
 
 ```JavaScript
-import { animateOnAdd, animateOnRemove } from inferno-animation
+import { animateOnAdd, animateOnRemove } from 'inferno-animation'
 
 componentDidMount () {
   animateOnAdd(this, 'PageAnimation')
