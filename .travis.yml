@@ -1,3 +1,11 @@
 language: node_js
 node_js:
 - '6.1'
+deploy:
+  provider: npm
+  email: sebastian@urbantalk.se
+  api_key:
+    secure: TuVItkh8Ks5VQAUaRsCRn93C2omEZWVtApwqoZGB1AFeh7D90meFg2Qhk5LCBqPkmHrg3qCMuvkVOGnrhV0d/DtpPtCQ/G9r9zkitj3TN2un09zEFQMFa/kCEq3Cej5ketmgfY3sM4BvB7MwIa/bAVUJo/DbAAvSr/NIrSDERHdZCGDra2ZLt7E/GGpTS4ETFzesDA+C19ENpTfMDvSeEDKJu0FQhP2rnEbD0FHeNothTcZla3HNNM1Ir7vkLpaN/SEw+tYifKurfkUFQin9ZDXGzEU8ZmyRB0Q9R72T32GmhsE5qj2wd6j0MGPpKMdPIQQI+t6CVOwdfyvcupZch0WDaWVQEYffL4z406ZZPelkaKdwSWwMMdIATzh9OSZ1cBrSSz6ZmV7ge4kdozgrA2ZEz3VI5QpsXirzQ3V96rKgE1FMQirOG6wovPGmMCy8S6wmwPQTzDfQD5P/bElIC32kwmzgxkr7clmpIllOH4ietQGAl9nXV2RHfgBNdmytZzUeKH29qrdRMtBZWsKjn9lNNq5SahloFoqjYSLoW8gx/yC9SENPmJacPNujAWWhGa5gpXZ+Hxya6i7OYP/GbcUkBAusOx4+NlY7hRso4Zef12vJ1EAOgInWIjTomQJ+zddVRzlIVKaLnYBd9pi5VB2oC9iAv8j4iORrOfOC2xI=
+  on:
+    tags: true
+    repo: jhsware/inferno-animation
