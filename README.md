@@ -10,45 +10,43 @@ NOTE: Make sure you set a `key` for the component or it won't be animated proper
 You can use this to animate single components or components in a list.
 
 ```JavaScript
+import { animateOnAdd, animateOnRemove } from inferno-animation
 
-  import { animateOnAdd, animateOnRemove } from inferno-animation
+componentDidMount () {
+  animateOnAdd(this, 'PageAnimation')
+}
 
-  componentDidMount () {
-    animateOnAdd(this, 'PageAnimation')
-  }
-
-  componentWillUnmount () {
-    animateOnRemove(this, 'PageAnimation')
-  }
+componentWillUnmount () {
+  animateOnRemove(this, 'PageAnimation')
+}
 ```
 
 Define your animations in CSS.
 
 ```css
+.PageAnimation-enter {
+  /* Enter animation start state */ 
+}
 
-  .PageAnimation-enter {
-    /* Enter animation start state */ 
-  }
+.PageAnimation-enter-active {
+  /* Enter animation transitions */
+}
 
-  .PageAnimation-enter-active {
-    /* Enter animation transitions */
-  }
+.PageAnimation-enter-end {
+  /* Enter animation end state */
+}
 
-  .PageAnimation-enter-end {
-    /* Enter animation end state */
-  }
+/* ----------------------------- */
 
-  /* ----------------------------- */
+.PageAnimation-leave {
+  /* Leave animation start state */
+}
 
-  .PageAnimation-leave {
-    /* Leave animation start state */
-  }
+.PageAnimation-leave-active {
+  /* Leave animation transitions */ 
+}
 
-  .PageAnimation-leave-active {
-    /* Leave animation transitions */ 
-  }
-
-  .PageAnimation-leave-end {
-    /* Leave animation end state */
-  }
+.PageAnimation-leave-end {
+  /* Leave animation end state */
+}
 ```
