@@ -1,6 +1,7 @@
 # inferno-animation
 
-Library of animation helpers for Inferno components
+Library of animation helpers for Inferno components that allow you to animate all css-properties including
+width and height using css-animations.
 
 # Animate component on add or remove
 
@@ -9,7 +10,7 @@ NOTE: Make sure you set a `key` for the component or it won't be animated proper
 
 You can use this to animate single components or components in a list.
 
-Both `animateOnAdd` and `animateOnRemove` allow you to animate width and height.
+Both `animateOnAdd` and `animateOnRemove` allow you to animate **width** and **height**.
 
 ```JavaScript
 import { animateOnAdd, animateOnRemove } from 'inferno-animation'
