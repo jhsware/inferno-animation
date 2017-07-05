@@ -76,3 +76,43 @@ When you add and remove the `Animated` container it will animate according to yo
   /* Leave animation end state */
 }
 ```
+
+### Sample: Animate height and fade-in/out
+```scss
+.PageAnimation {
+    &-leave {
+        // Leave animation start state
+        // width: auto;
+        opacity: 1;
+    }
+
+    &-leave-active {
+        // Leave animation transitions
+        overflow: hidden;
+        transition: height 0.3s ease-out, opacity 0.2s ease-in;
+    }
+
+    &-leave-end {
+        // Leave animation end state
+        // width: 0;
+        height: 0;
+        opacity: 0;
+    }
+
+    &-enter {
+        // Enter animation start state
+        height: 0;
+        opacity: 0;
+    }
+
+    &-enter-active {
+        // Enter animation transitions
+        transition: height 0.2s ease-out, opacity 0.5s ease-in;
+    }
+
+    &-enter-end {
+        // Enter animation end state
+        opacity: 1;
+    }
+}
+```
