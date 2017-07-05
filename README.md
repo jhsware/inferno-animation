@@ -1,9 +1,9 @@
 # inferno-animation
 
 Library of animation helpers for Inferno components that allow you to animate all css-properties including
-width and height using css-animations.
+width and height using css-animations. Timeouts are automatically calculated based on the provided CSS rules.
 
-# Animate component on add or remove
+## Animate component on add or remove
 
 Add calls on `componentDidMount` and `componentWillUnmount` to animate a component when it is added or removed.
 NOTE: Make sure you set a `key` for the component or it won't be animated properly.
@@ -24,7 +24,22 @@ componentWillUnmount () {
 }
 ```
 
-Define your animations in CSS.
+## Use wrapper to animate children
+You can use the prodvided wrapper `Animated` to animate components. It is useful if you want to
+reuse a component in different places with separate animations, or when you use other components
+that you can't modify.
+
+```JavaScript
+import { Animated } from 'inferno-animation'
+
+<Animated key={...} prefix="PageAnimation">
+  <MyListItem data={...} />
+</Animated>
+```
+
+When you add and remove the `Animated` container it will animate according to your CSS-rules.
+
+## Define your animations with CSS
 
 ```css
 .PageAnimation-enter {

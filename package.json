@@ -38,7 +38,8 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "inferno": "^3",
-    "inferno-component": "^3",
+    "inferno-component": "^3.6.4",
+    "inferno-create-element": "^3.6.4",
     "safe-utils": "^0.1.1"
   }
 }
