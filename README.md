@@ -35,6 +35,14 @@ import { Animated } from 'inferno-animation'
 <Animated key={...} prefix="PageAnimation">
   <MyListItem data={...} />
 </Animated>
+
+<Animated key={...} el="li" prefix="PageAnimation">
+  <MyListItem data={...} />
+</Animated>
+
+<Animated key={...} className="Something" prefix="PageAnimation">
+  <MyListItem data={...} />
+</Animated>
 ```
 
 When you add and remove the `Animated` container it will animate according to your CSS-rules.
