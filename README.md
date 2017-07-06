@@ -84,6 +84,16 @@ When you add and remove the `Animated` container it will animate according to yo
 }
 ```
 
+A note on animation timings. I use these rules of thumb:
+
+- 0.1s is too fast, brain doesn't really have time to react
+- 0.2s gives a sense of smoothness but feels instant
+- 0.3s is fast but noticeable
+- 0.5s is smooth
+- >0.5s user starts feeling that they are waiting for animation to end, make sure what ever you use it for is worth it
+
+I often combine a fade and height animation with different timings to get a nice result.
+
 ### Sample: Animate height and fade-in/out
 ```scss
 .PageAnimation {
