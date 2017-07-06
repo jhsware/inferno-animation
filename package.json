@@ -1,6 +1,6 @@
 {
   "name": "inferno-animation",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Library of animation helpers for Inferno components",
   "main": "index.js",
   "scripts": {
