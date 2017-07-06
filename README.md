@@ -1,7 +1,14 @@
 # inferno-animation
 
-Library of animation helpers for Inferno components that allow you to animate all css-properties including
+Library to animate Inferno components on mount and dismount. It allows you to animate all css-properties including
 width and height using css-animations. Timeouts are automatically calculated based on the provided CSS rules.
+
+You can use it by adding the animation helpers to `componentDidMount` and `componentWillUnmoun` or by wrapping
+your component in the `<Animated />` component.
+
+In lists, unlike `ReactTransitionGroup`, you need to wrap every item to animate them.
+
+Currently tested on Chrome/FF/Safari (latest) on Mac, but target is IE10+.
 
 ## Animate component on add or remove
 
