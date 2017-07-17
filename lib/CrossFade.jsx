@@ -47,7 +47,7 @@ const animateSizeChange = function (component, animationName, sourceSize, target
   const del = cs.getPropertyValue('transition-delay').split(',')
   const animTimeout = dur.map((v, index) => parseFloat(v) + parseFloat(del[index])).reduce((prev, curr) => prev > curr ? prev : curr, 0)
   nrofTransitionsLeft = dur.length - 1
-  // setTimeout(onTransitionEnd, Math.round(animTimeout * 1000) + 50) // Fallback if transitionend fails
+  setTimeout(onTransitionEnd, Math.round(animTimeout * 1000) + 50) // Fallback if transitionend fails
 
   /*
   console.log('----- transition-duration', cs.getPropertyValue('transition-duration'))
