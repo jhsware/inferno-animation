@@ -1,0 +1,133 @@
+.Menu {
+  margin: 2rem 1rem;
+}
+
+.Menu a {
+  margin-right: 2em;
+}
+
+.Content {
+  width: 20rem;
+}
+
+/* Make sure we don't get jumps att beginning and end of animation */
+.SampleContainer {
+  padding: 1em 0;
+}
+
+.SampleContent {
+  background-color: rgba(0,0,255,0.2);
+}
+
+.SampleContent :first-child {
+  margin-top: 0;
+}
+
+.SampleContent :last-child {
+  margin-bottom: 0;
+}
+/* Jump reset over */
+
+.Sample--Animation-enter {
+  /* Enter animation start state */
+  height: 0;
+  opacity: 0;
+  margin: 0 inherit;
+}
+
+.Sample--Animation-enter-active {
+  /* Enter animation transitions */
+  overflow: hidden !important;
+  transition: height 1.5s ease-out, opacity .7s ease-in;
+  min-height: 0 !important;
+}
+
+.Sample--Animation-enter-end {
+  /* Enter animation end state */
+  opacity: 1;
+}
+
+.Sample--Animation-leave {
+  /* Leave animation start state */
+  opacity: 1;
+}
+
+.Sample--Animation-leave-active {
+  /* Leave animation transitions */
+  overflow: hidden !important;
+  transition: height 1.3s ease-out, opacity 1.0s ease-in;
+  min-height: 0 !important;
+}
+
+.Sample--Animation-leave-end {
+  /* Leave animation end state */
+  height: 0;
+  opacity: 0;
+  margin: 0 inherit;
+}
+
+/* Make sure we don't get jumps att beginning and end of animation */
+.CrossFadeContainer {
+  padding: 1em 0;
+  overflow-y: hidden;
+  background-color: rgba(0,0,255,0.2);
+}
+
+.CrossFadeContainer :first-child {
+  margin-top: 0;
+}
+
+.CrossFadeContainer :last-child {
+  margin-bottom: 0;
+}
+/* Jump reset over */
+
+.CrossFade--Animation-cross-fade-active {
+  transition: height .7s ease-out;
+}
+
+.CrossFade--Animation-enter,
+.CrossFade--Animation-leave-end {
+  /* Enter animation start state */
+  /* Leave animation end state */
+  opacity: 0;
+}
+
+.CrossFade--Animation-enter-active,
+.CrossFade--Animation-leave-active {
+  /* Enter animation transitions */
+  /* Leave animation transitions */
+  transition: opacity .7s ease-in;
+}
+
+.CrossFade--Animation-enter-end,
+.CrossFade--Animation-leave {
+  /* Enter animation end state */
+  /* Leave animation start state */
+  opacity: 1;
+}
+
+.PageOne {
+  background-color: rgba(255,0,0,0.2);
+}
+
+.PageTwo {
+  background-color: rgba(0,255,0,0.2);
+}
+
+/**
+ * Nested animations require some extra rules to avoid jumping around
+ */
+
+/* Needed to make sure nested animations don't make the crossfade jump around */
+/* TODO: This should perhaps be set with Javascript? */
+.CrossFade--Animation-cross-fade-active .InfernoAnimation-active {
+  transition: all .7s ease-out;
+}
+
+/* When cross fading, the new content may animate from 0 so need to prevent that 
+   when getting target size */
+.InfernoAnimation--getSize .Sample--Animation-enter {
+  height: auto;
+  margin: inherit;
+}
