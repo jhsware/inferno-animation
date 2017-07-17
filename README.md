@@ -1,12 +1,18 @@
 # inferno-animation
 
-Library to animate Inferno components on mount and dismount. It allows you to animate all css-properties including
-width and height using css-animations. Timeouts are automatically calculated based on the provided CSS rules.
+Library to animate Inferno components on mount and dismount. Also supports cross-fade, where height and/or
+width animates from source size to target size.
+
+This lib allows you to animate all css-properties including width and height using css-animations.
+Timeouts are automatically calculated based on the provided CSS rules.
 
 You can use it by adding the animation helpers to `componentDidMount` and `componentWillUnmoun` or by wrapping
 your component in the `<Animated />` component.
 
 In lists, unlike `ReactTransitionGroup`, you need to wrap every item to animate them.
+
+To perform a crossfade you wrap the components you want to crossfade between in a '<CrossFade />' component.
+Note: you can only cross-fade between single components, to cross-fade lists you need to wrap them in a container.
 
 Currently tested on Chrome/FF/Safari (latest) on Mac, but target is IE10+.
 
@@ -133,3 +139,105 @@ I often combine a fade and height animation with different timings to get a nice
     }
 }
 ```
+
+## Cross-fade between components
+
+This example shows how to cross-fade between the components `PageOne` and `PageTwo`. The CrossFade components
+adds a class `InfernoAnimation--noAnim` when being mounted to prevent triggering the cross-fade animation on
+mount.
+
+```JavaScript
+import { CrossFade } from 'inferno-animation'
+
+...
+
+render () {
+  return (
+    <CrossFade className="CrossFadeContainer" prefix="CrossFade--Animation">
+      {this.state.visible === 'one' && <PageOne />}
+      {this.state.visible === 'two' && <PageTwo />}
+    </CrossFade>
+  )
+}
+```
+
+### Sample cross-fade animation
+```css
+.CrossFade--Animation-cross-fade-active {
+  transition: height .7s ease-out;
+}
+
+.CrossFade--Animation-enter,
+.CrossFade--Animation-leave-end {
+  /* Enter animation start state */
+  /* Leave animation end state */
+  opacity: 0;
+}
+
+.CrossFade--Animation-enter-active,
+.CrossFade--Animation-leave-active {
+  /* Enter animation transitions */
+  /* Leave animation transitions */
+  transition: opacity .7s ease-in;
+}
+
+.CrossFade--Animation-enter-end,
+.CrossFade--Animation-leave {
+  /* Enter animation end state */
+  /* Leave animation start state */
+  opacity: 1;
+}
+```
+
+### Avoiding jumps at beginning or end of animation
+If the content contains text elements you will get strange behaviour due
+to how the browser calculates margins. To avoid this, set the top and bottom
+margin of the first and last text element to 0. Add those margins to the container
+instead.
+
+```css
+/* Make sure we don't get jumps att beginning and end of animation */
+.CrossFadeContainer :first-child {
+  margin-top: 0;
+}
+
+.CrossFadeContainer :last-child {
+  margin-bottom: 0;
+}
+
+.CrossFadeContainer {
+  padding: 1em 0;
+  overflow-y: hidden;
+  background-color: rgba(0,0,255,0.2);
+}
+/* Jump reset over */
+```
+
+### Avoid nested animations causing jumping
+If you have animations in the child components they can cause jumping if
+the transition times are slower than that of the cross-fade. So we make sure
+we override them to get smooth transitions and correct size calculation:
+
+```css
+/**
+ * Nested animations require some extra rules to avoid jumping around
+ */
+
+/* Needed to make sure nested animations don't make the crossfade jump around */
+/* TODO: This should perhaps be set with Javascript? */
+.CrossFade--Animation-cross-fade-active .InfernoAnimation-active {
+  transition: all .7s ease-out;
+}
+
+/* When cross fading, the new content may animate from 0 so need to prevent that 
+   when getting target size */
+.InfernoAnimation--getSize .Sample--Animation-enter {
+  height: auto;
+  margin: inherit;
+}
+```
+
+## Running the tests
+1. `$ npm run install && npm run test`
+
+2. Open test page in browser `http://localhost:8080`
