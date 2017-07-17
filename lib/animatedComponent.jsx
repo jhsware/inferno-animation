@@ -1,8 +1,12 @@
 import { cloneVNode } from 'inferno'
 
 export const animateOnRemove = function (component, animationName) {
-  // 1. Clone DOM node, inject it and hide original
   const domEl = component._vNode.dom
+  // Do not animate if this class is set (should I do this by passing prop through context?)
+  if (domEl.closest('.InfernoAnimation--noAnim')) {
+    return
+  }
+  // 1. Clone DOM node, inject it and hide original
   const clone = domEl.cloneNode(true)
 
   const height = domEl.clientHeight
@@ -20,6 +24,10 @@ export const animateOnRemove = function (component, animationName) {
   var done = false
   var nrofTransitionsLeft
   const onTransitionEnd = (event) => {
+    // Make sure it isn't a child that is triggering the event
+    if (event && event.target !== clone) {
+      return
+    }
     if (event !== undefined && nrofTransitionsLeft > 0) {
       nrofTransitionsLeft--
       return
@@ -38,6 +46,9 @@ export const animateOnRemove = function (component, animationName) {
   clone.addEventListener("transitionend", onTransitionEnd, false)
   // 3. Activate transitions
   clone.classList.add(animationName + '-leave-active')
+  // The following is needed so we can prevent nested animations from playing slower
+  // than parent animation causing a jump (in for example a cross-fade)
+  clone.classList.add('InfernoAnimation-active')
 
   const cs = window.getComputedStyle(clone)
   const dur = cs.getPropertyValue('transition-duration').split(',')
@@ -63,6 +74,11 @@ export const animateOnRemove = function (component, animationName) {
 export const animateOnAdd = function (component, animationName) {
   const node = component._vNode.dom
 
+  // Do not animate if this class is set (should I do this by passing prop through context?)
+  if (node.closest('.InfernoAnimation--noAnim')) {
+    return
+  }
+
   // 1. Get height and set start of animation
   const height = node.clientHeight
   const width = node.clientWidth
@@ -72,6 +88,10 @@ export const animateOnAdd = function (component, animationName) {
   var done = false
   var nrofTransitionsLeft
   const onTransitionEnd = (event) => {
+    // Make sure it isn't a child that is triggering the event
+    if (event && event.target !== node) {
+      return
+    }
     if (event !== undefined && nrofTransitionsLeft > 0) {
       nrofTransitionsLeft--
       return
@@ -83,13 +103,16 @@ export const animateOnAdd = function (component, animationName) {
     node.style.height = node.style.width = ''
     node.classList.remove(animationName + '-enter-active')
     node.classList.remove(animationName + '-enter-end')
-    // console.log('----- added')
+    node.classList.remove('InfernoAnimation-active')
   }
   node.addEventListener("transitionend", onTransitionEnd, false)
   const dummy = node.clientHeight
 
   // 3. Activate transition
   node.classList.add(animationName + '-enter-active')
+  // The following is needed so we can prevent nested animations from playing slower
+  // than parent animation causing a jump (in for example a cross-fade)
+  node.classList.add('InfernoAnimation-active')
 
   const cs = window.getComputedStyle(node)
   const dur = cs.getPropertyValue('transition-duration').split(',')
