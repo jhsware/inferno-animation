@@ -9,8 +9,8 @@ export const animateOnRemove = function (component, animationName) {
   // 1. Clone DOM node, inject it and hide original
   const clone = domEl.cloneNode(true)
 
-  const height = domEl.clientHeight
-  const width = domEl.clientWidth
+  const height = domEl.offsetHeight
+  const width = domEl.offsetWidth
 
   clone.classList.add(animationName + '-leave')
   clone.style.height = height + 'px'
@@ -80,8 +80,8 @@ export const animateOnAdd = function (component, animationName) {
   }
 
   // 1. Get height and set start of animation
-  const height = node.clientHeight
-  const width = node.clientWidth
+  const height = node.offsetHeight
+  const width = node.offsetWidth
   node.classList.add(animationName + '-enter')
 
   // 2. Set an animation listener, code at end

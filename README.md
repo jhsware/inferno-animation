@@ -6,6 +6,8 @@ width animates from source size to target size.
 This lib allows you to animate all css-properties including width and height using css-animations.
 Timeouts are automatically calculated based on the provided CSS rules.
 
+IMPORTANT: This lib assumes you have set `box-sizing: border-box;` on the elements being animated!
+
 You can use it by adding the animation helpers to `componentDidMount` and `componentWillUnmoun` or by wrapping
 your component in the `<Animated />` component.
 

@@ -11,8 +11,6 @@ const animateSizeChange = function (component, animationName, sourceSize, target
   }
 
   // 1. Get height and set start of animation
-  const height = node.clientHeight
-  const width = node.clientWidth
   node.style.height = sourceSize.height + 'px'
   node.style.width = sourceSize.width + 'px'
 
@@ -62,11 +60,11 @@ const animateSizeChange = function (component, animationName, sourceSize, target
   }, 5)
 }
 
-function _getSizeOfVnode (vNode) {
-  const domEl = vNode.dom
+function _getSizeOfCrossFadeVnode (vNode) {
+  const domEl = vNode.dom.parentElement
   domEl.classList.add('InfernoAnimation--getSize')
-  const height = domEl.clientHeight
-  const width = domEl.clientWidth
+  const height = domEl.offsetHeight
+  const width = domEl.offsetWidth
   domEl.classList.remove('InfernoAnimation--getSize')
   return { width, height }
 }
@@ -101,12 +99,12 @@ class CrossFade extends Component {
   }
 
   setTargetSize (vNode) {
-    this.targetSize = _getSizeOfVnode(vNode)
+    this.targetSize = _getSizeOfCrossFadeVnode(vNode)
     this._animationCheck()
   }
 
   setSourceSize (vNode) {
-    this.sourceSize = _getSizeOfVnode(vNode)
+    this.sourceSize = _getSizeOfCrossFadeVnode(vNode)
     this._animationCheck()
   }
 
