@@ -13,8 +13,9 @@ your component in the `<Animated />` component.
 
 In lists, unlike `ReactTransitionGroup`, you need to wrap every item to animate them.
 
-To perform a crossfade you wrap the components you want to crossfade between in a `<CrossFade />` component.
-Note: you can only cross-fade between single components, to cross-fade lists you need to wrap them in a container.
+To perform a cross-fade you wrap the components in a `<CrossFade />` component.
+Note: you can only have one (1) mounting and one (1) unmounting component during a cross-fade. To cross-fade
+lists you need to wrap each of them in a container.
 
 Currently tested on (polyfills from https://polyfill.io):
 - Chrome/FF/Safari (latest) on macOS 10.12 (Sierra)
