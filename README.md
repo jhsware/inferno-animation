@@ -233,14 +233,14 @@ we override them to get smooth transitions and correct size calculation:
 .CrossFade--Animation-cross-fade-active .InfernoAnimation-active {
   transition: all .7s ease-out;
 }
-
-/* When cross fading, the new content may animate from 0 so need to prevent that 
-   when getting target size */
-.InfernoAnimation--getSize .Sample--Animation-enter {
-  height: auto;
-  margin: inherit;
-}
 ```
+
+Note 1: When a parent element is cross-fading it sets the class `InfernoAnimation--noAnim`
+which prevents children from animating.
+
+Note 2: If you have async operations causing your mounting component to mutate, the height and width
+calculations might be wrong because they are performed prior to the async operation has
+completed.
 
 ## Running the tests
 1. `$ npm run install && npm build && npm run test-browser`
