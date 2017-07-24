@@ -8,8 +8,8 @@ Timeouts are automatically calculated based on the provided CSS rules.
 
 IMPORTANT: This lib assumes you have set `box-sizing: border-box;` on the elements being animated!
 
-You can use it by adding the animation helpers to `componentDidMount` and `componentWillUnmoun` or by wrapping
-your component in the `<Animated />` component.
+You can animate your components by adding the animation helpers to `componentDidMount` and `componentWillUnmoun` 
+or by wrapping your component in the `<Animated />` component.
 
 In lists, unlike `ReactTransitionGroup`, you need to wrap every item to animate them.
 
@@ -42,6 +42,46 @@ componentDidMount () {
 
 componentWillUnmount () {
   animateOnRemove(this, 'PageAnimation')
+}
+```
+
+### Passing custom class names and callback
+You can optionally pass custom class names to be used during the animation. You can also
+pass a callback which is fired when the animations are finished. This is the firing order:
+
+1 add **start**
+2 add **active**
+3 add **end**, remove **start**
+- the animation plays and when done:
+4 remove **active**, remove **end**
+5 call optional **callback**
+(6) if leaving, remove the element
+
+Example:
+
+```JavaScript
+import { animateOnAdd, animateOnRemove } from 'inferno-animation'
+
+const enterCls = {
+  start: 'willEnter',
+  active: 'animationActiveClass',
+  end: 'didEnterClass'
+}
+componentDidMount () {
+  animateOnAdd(this, enterCls, (el) => {
+    // Element 'el' is now visible
+  })
+}
+
+const leaveCls = {
+  start: 'willLeaveClass',
+  active: 'animationActiveClass',
+  end: 'didLeaveClass'
+}
+componentWillUnmount () {
+  animateOnRemove(this, leaveCls, (el) => { 
+    // Element 'el' will be removed when this callback has returned
+  })
 }
 ```
 

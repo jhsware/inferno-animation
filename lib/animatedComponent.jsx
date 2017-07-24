@@ -1,20 +1,27 @@
 import { cloneVNode } from 'inferno'
 
-export const animateOnRemove = function (component, animationName) {
+export const animateOnRemove = function (component, animationName, callback) {
   const domEl = component._vNode.dom
   // Do not animate if this class is set (should I do this by passing prop through context?)
   if (domEl.closest('.InfernoAnimation--noAnim')) {
     return
   }
+  let animCls = animationName
+  if (typeof animationName !== 'object') {
+    animCls['start'] = animationName + '-leave'
+    animCls['active'] = animationName + '-leave-active'
+    animCls['end'] = animationName + '-leave-end'
+  }
+
   // 1. Clone DOM node, inject it and hide original
   const clone = domEl.cloneNode(true)
 
   const height = domEl.offsetHeight
   const width = domEl.offsetWidth
 
-  clone.classList.add(animationName + '-leave')
   clone.style.height = height + 'px'
   clone.style.width = width + 'px'
+  clone.classList.add(animCls.start)
 
   // Leaving original element so it can be removed in the normal way
   domEl.style['display'] = 'none'
@@ -34,7 +41,11 @@ export const animateOnRemove = function (component, animationName) {
     }
     if (done) return
     done = true
-    // 5. Remove the element
+
+    // 5. Call callback to allow stuff to happen
+    callback && callback(clone)
+
+    // 6. Remove the element
     // Note: If I don't declare an anonymous function immediately here this callback isn't called!
     // const parent = clone.parentElement
     // parent.removeChild(clone)
@@ -45,7 +56,7 @@ export const animateOnRemove = function (component, animationName) {
 
   clone.addEventListener("transitionend", onTransitionEnd, false)
   // 3. Activate transitions
-  clone.classList.add(animationName + '-leave-active')
+  clone.classList.add(animCls.active)
   // The following is needed so we can prevent nested animations from playing slower
   // than parent animation causing a jump (in for example a cross-fade)
   clone.classList.add('InfernoAnimation-active')
@@ -65,13 +76,13 @@ export const animateOnRemove = function (component, animationName) {
 
   // 4. Activate target state
   setTimeout(() => {
-    clone.classList.add(animationName + '-leave-end')
-    clone.classList.remove(animationName + '-leave')
+    clone.classList.add(animCls.end)
+    clone.classList.remove(animCls.start)
     clone.style.height = clone.style.width = ''
   }, 5)
 }
 
-export const animateOnAdd = function (component, animationName) {
+export const animateOnAdd = function (component, animationName, callback) {
   const node = component._vNode.dom
 
   // Do not animate if this class is set (should I do this by passing prop through context?)
@@ -79,10 +90,17 @@ export const animateOnAdd = function (component, animationName) {
     return
   }
 
+  let animCls = animationName
+  if (typeof animationName !== 'object') {
+    animCls['start'] = animationName + '-enter'
+    animCls['active'] = animationName + '-enter-active'
+    animCls['end'] = animationName + '-enter-end'
+  }
+
   // 1. Get height and set start of animation
   const height = node.offsetHeight
   const width = node.offsetWidth
-  node.classList.add(animationName + '-enter')
+  node.classList.add(animCls.start)
 
   // 2. Set an animation listener, code at end
   var done = false
@@ -101,15 +119,18 @@ export const animateOnAdd = function (component, animationName) {
     // 5. Remove the element
     // Note: If I don't declare an anonymous function immediately here this callback isn't called!
     node.style.height = node.style.width = ''
-    node.classList.remove(animationName + '-enter-active')
-    node.classList.remove(animationName + '-enter-end')
+    node.classList.remove(animCls.active)
+    node.classList.remove(animCls.end)
     node.classList.remove('InfernoAnimation-active')
+    
+    // 6. Call callback to allow stuff to happen
+    callback && callback(node)
   }
   node.addEventListener("transitionend", onTransitionEnd, false)
   const dummy = node.clientHeight
 
   // 3. Activate transition
-  node.classList.add(animationName + '-enter-active')
+  node.classList.add(animCls.active)
   // The following is needed so we can prevent nested animations from playing slower
   // than parent animation causing a jump (in for example a cross-fade)
   node.classList.add('InfernoAnimation-active')
@@ -131,7 +152,7 @@ export const animateOnAdd = function (component, animationName) {
   setTimeout(() => {
     node.style.height = height + 'px'
     node.style.width = width + 'px'
-    node.classList.add(animationName + '-enter-end')
-    node.classList.remove(animationName + '-enter')
+    node.classList.add(animCls.end)
+    node.classList.remove(animCls.start)
   }, 5)
 }
