@@ -6,8 +6,11 @@ export const animateOnRemove = function (component, animationName, callback) {
   if (domEl.closest('.InfernoAnimation--noAnim')) {
     return
   }
-  let animCls = animationName
-  if (typeof animationName !== 'object') {
+  
+  let animCls = {}
+  if (typeof animationName === 'object') {
+    animCls = animationName
+  } else {
     animCls['start'] = animationName + '-leave'
     animCls['active'] = animationName + '-leave-active'
     animCls['end'] = animationName + '-leave-end'
@@ -90,14 +93,16 @@ export const animateOnAdd = function (component, animationName, callback) {
     return
   }
 
-  let animCls = animationName
-  if (typeof animationName !== 'object') {
+  let animCls = {}
+  if (typeof animationName === 'object') {
+    animCls = animationName
+  } else {
     animCls['start'] = animationName + '-enter'
     animCls['active'] = animationName + '-enter-active'
     animCls['end'] = animationName + '-enter-end'
   }
 
-  const isDisplayNone = cs.getPropertyValue('display').getPropertyValue('display') === 'none'
+  const isDisplayNone = window.getComputedStyle(node).getPropertyValue('display') === 'none'
 
   // 1. Get height and set start of animation
   const height = node.offsetHeight
