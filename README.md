@@ -8,6 +8,8 @@ Timeouts are automatically calculated based on the provided CSS rules.
 
 IMPORTANT: This lib assumes you have set `box-sizing: border-box;` on the elements being animated!
 
+If the component that is added has `display: none` no height calculations will be performed.
+
 You can animate your components by adding the animation helpers to `componentDidMount` and `componentWillUnmoun` 
 or by wrapping your component in the `<Animated />` component.
 

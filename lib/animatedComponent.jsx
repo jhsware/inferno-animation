@@ -97,6 +97,8 @@ export const animateOnAdd = function (component, animationName, callback) {
     animCls['end'] = animationName + '-enter-end'
   }
 
+  const isDisplayNone = cs.getPropertyValue('display').getPropertyValue('display') === 'none'
+
   // 1. Get height and set start of animation
   const height = node.offsetHeight
   const width = node.offsetWidth
@@ -150,8 +152,10 @@ export const animateOnAdd = function (component, animationName, callback) {
   
   // 4. Activate target state
   setTimeout(() => {
-    node.style.height = height + 'px'
-    node.style.width = width + 'px'
+    if (!isDisplayNone) {
+      node.style.height = height + 'px'
+      node.style.width = width + 'px'
+    }
     node.classList.add(animCls.end)
     node.classList.remove(animCls.start)
   }, 5)
