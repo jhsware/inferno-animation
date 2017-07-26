@@ -180,7 +180,7 @@ export const animateOnAdd = function (component, animationName, callback) {
       node.style.height = height + 'px'
       node.style.width = width + 'px'
     }
-    _removeClassName(node, animCls.end)
+    _addClassName(node, animCls.end)
     _removeClassName(node, animCls.start)
   }, 5)
 }
