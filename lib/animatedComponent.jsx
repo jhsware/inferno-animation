@@ -1,16 +1,20 @@
 import { cloneVNode } from 'inferno'
 
 function _addClassName (node, className) {
-  const tmp = className.split(' ')
-  for (let i=0; i < tmp.length; i++) {
-    node.classList.add(tmp[i])
+  if (className) {
+    const tmp = className.split(' ')
+    for (let i=0; i < tmp.length; i++) {
+      node.classList.add(tmp[i])
+    }
   }
 }
 
 function _removeClassName (node, className) {
-  const tmp = className.split(' ')
-  for (let i=0; i < tmp.length; i++) {
-    node.classList.remove(tmp[i])
+  if (className) {
+    const tmp = className.split(' ')
+    for (let i=0; i < tmp.length; i++) {
+      node.classList.remove(tmp[i])
+    }
   }
 }
 
