@@ -3,7 +3,7 @@ import { cloneVNode } from 'inferno'
 export const animateOnRemove = function (component, animationName, callback) {
   const domEl = component._vNode.dom
   // Do not animate if this class is set (should I do this by passing prop through context?)
-  if (domEl.closest('.InfernoAnimation--noAnim')) {
+  if (domEl.closest && domEl.closest('.InfernoAnimation--noAnim')) {
     return
   }
   
@@ -89,7 +89,7 @@ export const animateOnAdd = function (component, animationName, callback) {
   const node = component._vNode.dom
 
   // Do not animate if this class is set (should I do this by passing prop through context?)
-  if (node.closest('.InfernoAnimation--noAnim')) {
+  if (node.closest && node.closest('.InfernoAnimation--noAnim')) {
     return
   }
 
