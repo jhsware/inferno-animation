@@ -6,22 +6,17 @@ import { animateOnAdd, animateOnRemove } from './animatedComponent'
 class Animated extends Component {
 
   componentDidMount () {
-    animateOnAdd(this, this.props.prefix)
+    animateOnAdd(this, this.props.prefix, this.props.onDidEnter)
   }
 
   componentWillUnmount () {
-    animateOnRemove(this, this.props.prefix)
+    animateOnRemove(this, this.props.prefix, this.props.onDidLeave)
   }
 
   render () {
-    const elProps = {}
-    if (this.props.className) {
-      elProps['className'] = this.props.className
-    }
-    
     return createElement(
       this.props.el || 'div', 
-      elProps, 
+      this.props, 
       this.props.children
     )
   }
