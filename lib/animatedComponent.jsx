@@ -45,7 +45,7 @@ export const animateOnRemove = function (component, animationName, callback) {
   _addClassName(clone, animCls.start)
 
   // Leaving original element so it can be removed in the normal way
-  domEl.style['display'] = 'none'
+  domEl.style['display'] = 'none !important'
   domEl.insertAdjacentElement('beforebegin', clone)
 
   // 2. Set an animation listener, code at end
