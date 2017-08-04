@@ -117,9 +117,11 @@ class CrossFade extends Component {
       elProps['className'] = 'InfernoAnimation--noAnim'
     }
     
-    const childEls = this.props.children.map((childEl) => createElement(CrossFadeItem, {
+    const children = (!Array.isArray(children) ? [this.props.children] : this.props.children)
+
+    const childEls = children.map((childEl) => createElement(CrossFadeItem, {
       // onComponentDidMount: this.setTargetSize, onComponentWillUnmount: this.setSourceSize, key: childEl.key
-      onEnter: this.setTargetSize, onLeave: this.setSourceSize, key: childEl.key, prefix: this.props.prefix
+      onEnter: this.setTargetSize, onLeave: this.setSourceSize, key: childEl && childEl.key, prefix: this.props.prefix
     }, childEl))
 
 
