@@ -51,13 +51,13 @@ componentWillUnmount () {
 You can optionally pass custom class names to be used during the animation. You can also
 pass a callback which is fired when the animations are finished. This is the firing order:
 
-1 add **start**
-2 add **active**
-3 add **end**, remove **start**
-- the animation plays and when done:
-4 remove **active**, remove **end**
-5 call optional **callback**
-(6) if leaving, remove the element
+1. add **start**
+2. add **active**
+3. add **end**, remove **start**
+  - the animation plays and when done:
+4. remove **active**, remove **end**
+5. call optional **callback**
+6. if leaving, remove the element
 
 Example:
 
