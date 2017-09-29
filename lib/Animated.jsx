@@ -17,6 +17,7 @@ class Animated extends Component {
     return createElement(
       this.props.el || 'div', 
       this.props, 
+      this.props.el || this.props.tag || 'div', 
       this.props.children
     )
   }

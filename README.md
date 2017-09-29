@@ -99,7 +99,13 @@ import { Animated } from 'inferno-animation'
   <MyListItem data={...} />
 </Animated>
 
+/* Specify what element to render by passing attribute "el" */
 <Animated key={...} el="li" prefix="PageAnimation">
+  <MyListItem data={...} />
+</Animated>
+
+/* "tag" is an alias for "el" to harmonise with inferno-bootstrap */
+<Animated key={...} tag="li" prefix="PageAnimation">
   <MyListItem data={...} />
 </Animated>
 
