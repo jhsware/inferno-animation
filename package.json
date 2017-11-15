@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run build && npm run build-test",
     "test-browser": "npm run build-test && node test/server.js",
-    "prepublish": "NODE_ENV=development npm install && npm run build",
+    "prepublish": "NODE_ENV=development npm run build",
     "postversion": "git push && git push --tags",
     "build": "rm -rf ./dist && NODE_ENV=production babel lib --out-dir dist  --source-maps",
     "build-dev": "rm -rf ./dist && babel lib --out-dir dist --watch --source-maps",
