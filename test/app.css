@@ -38,6 +38,7 @@ html {
 /* Jump reset over */
 
 .Sample {
+  display: block;
   border: 4px solid rgba(255,0,0,0.3);
 }
 

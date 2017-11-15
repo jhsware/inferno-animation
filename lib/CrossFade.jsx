@@ -125,7 +125,7 @@ class CrossFade extends Component {
     }, childEl))  
 
     return createElement(
-      this.props.el || 'div', 
+      this.props.el || this.props.tag || 'div', 
       elProps, 
       childEls
     )
