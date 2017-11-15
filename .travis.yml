@@ -1,6 +1,9 @@
 language: node_js
 node_js:
-- '6.1'
+  - '6.1'
+  - '8.9'
+before_install:
+  - npm install -g babel-cli
 deploy:
   provider: npm
   email: sebastian@urbantalk.se
@@ -9,3 +12,4 @@ deploy:
   on:
     tags: true
     repo: jhsware/inferno-animation
+    
