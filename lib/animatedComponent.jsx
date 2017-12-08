@@ -37,8 +37,7 @@ export const animateOnRemove = function (component, animationName, callback) {
   // 1. Clone DOM node, inject it and hide original
   const clone = domEl.cloneNode(true)
 
-  const height = domEl.offsetHeight
-  const width = domEl.offsetWidth
+  const { width, height } = domEl.getBoundingClientRect()
 
   clone.style.height = height + 'px'
   clone.style.width = width + 'px'
@@ -123,8 +122,7 @@ export const animateOnAdd = function (component, animationName, callback) {
   const isDisplayNone = window.getComputedStyle(node).getPropertyValue('display') === 'none'
 
   // 1. Get height and set start of animation
-  const height = node.offsetHeight
-  const width = node.offsetWidth
+  const { width, height } = node.getBoundingClientRect()
   _addClassName(node, animCls.start)
 
 

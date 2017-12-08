@@ -63,8 +63,7 @@ const animateSizeChange = function (component, animationName, sourceSize, target
 function _getSizeOfCrossFadeVnode (vNode) {
   const domEl = vNode.dom.parentElement
   domEl.classList.add('InfernoAnimation--getSize')
-  const height = domEl.offsetHeight
-  const width = domEl.offsetWidth
+  const { width, height } = domEl.getBoundingClientRect()
   domEl.classList.remove('InfernoAnimation--getSize')
   return { width, height }
 }
