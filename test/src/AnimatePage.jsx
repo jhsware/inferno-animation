@@ -1,4 +1,4 @@
-import Component from 'inferno-component'
+import { Component } from 'inferno'
 import { Animated } from '../../index'
 
 function Content (props) {

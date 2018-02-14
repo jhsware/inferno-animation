@@ -1,10 +1,10 @@
 'use strict'
-import Component from 'inferno-component'
-import createElement from 'inferno-create-element'
+import { Component } from 'inferno'
+import { createElement } from 'inferno-create-element'
 import { animateOnAdd, animateOnRemove } from './animatedComponent'
 
 const animateSizeChange = function (component, animationName, sourceSize, targetSize) {
-  const node = component._vNode.dom
+  const node = component.$V.dom
   // Do not animate if this class is set (should I do this by passing prop through context?)
   if (node.closest('.InfernoAnimation--noAnim')) {
     return
@@ -82,7 +82,7 @@ class CrossFade extends Component {
   }
 
   _animationCheck () {
-    if (this.state.active && this.targetSize && this.sourceSize && this._vNode.dom) {
+    if (this.state.active && this.targetSize && this.sourceSize && this.$V.dom) {
       animateSizeChange(this, this.props.prefix, this.sourceSize, this.targetSize)
       this.targetSize = this.sourceSize = undefined
     }
@@ -144,13 +144,13 @@ function CrossFadeItem (props) {
 class CrossFadeItem extends Component {
 
   componentDidMount () {
-    this.props.onEnter(this._vNode)
-    animateOnAdd(this, this.props.prefix)
+    this.props.onEnter(this.$V)
+    setTimeout(() => animateOnAdd(this, this.props.prefix), 1)
   }
 
   componentWillUnmount () {
-    this.props.onLeave(this._vNode)
-    animateOnRemove(this, this.props.prefix)
+    this.props.onLeave(this.$V)
+    setTimeout(() => animateOnRemove(this, this.props.prefix), 1)
   }
 
   render () {

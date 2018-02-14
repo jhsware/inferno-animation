@@ -1,6 +1,6 @@
 'use strict'
-import Component from 'inferno-component'
-import createElement from 'inferno-create-element'
+import { Component } from 'inferno'
+import { createElement } from 'inferno-create-element'
 import { animateOnAdd, animateOnRemove } from './animatedComponent'
 
 const excludeProps = {'el': true, 'tag': true, 'prefix': true, children: true}

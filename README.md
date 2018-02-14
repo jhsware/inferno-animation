@@ -26,6 +26,20 @@ Currently tested on (polyfills from https://polyfill.io):
 
 Run the visual tests (instructions at end of this document) to see the animations in practice. Enjoy!
 
+## Debuggging animations
+There is a setTimeout fallback in case transitions are interrupted to make sure they clean up properly. This
+timeout isn't aware of Chrome Devtools animation slowdown feature. In order to debug animations you can disable
+these timeouts by setting:
+
+```
+window.debugAnimations = true
+
+```
+
+## Version compatibility
+4.x Inferno 4.x
+0.4.x Inferno <= 3.x
+
 ## Animate component on add or remove
 
 Add calls on `componentDidMount` and `componentWillUnmount` to animate a component when it is added or removed.

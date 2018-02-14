@@ -19,7 +19,7 @@ function _removeClassName (node, className) {
 }
 
 export const animateOnRemove = function (component, animationName, callback) {
-  const domEl = component._vNode.dom
+  const domEl = component.$V.dom
   // Do not animate if this class is set (should I do this by passing prop through context?)
   if (domEl.closest && domEl.closest('.InfernoAnimation--noAnim')) {
     return
@@ -103,7 +103,7 @@ export const animateOnRemove = function (component, animationName, callback) {
 }
 
 export const animateOnAdd = function (component, animationName, callback) {
-  const node = component._vNode.dom
+  const node = component.$V.dom
 
   // Do not animate if this class is set (should I do this by passing prop through context?)
   if (node.closest && node.closest('.InfernoAnimation--noAnim')) {
@@ -164,7 +164,7 @@ export const animateOnAdd = function (component, animationName, callback) {
   const del = cs.getPropertyValue('transition-delay').split(',')
   const animTimeout = dur.map((v, index) => parseFloat(v) + parseFloat(del[index])).reduce((prev, curr) => prev > curr ? prev : curr, 0)
   nrofTransitionsLeft = dur.length - 1
-  setTimeout(onTransitionEnd, Math.round(animTimeout * 1000) + 50) // Fallback if transitionend fails
+  !window.debugAnimations && setTimeout(onTransitionEnd, Math.round(animTimeout * 1000) + 100) // Fallback if transitionend fails
 
   /*
   console.log('----- transition-duration', cs.getPropertyValue('transition-duration'))

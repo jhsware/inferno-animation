@@ -1,4 +1,4 @@
-import Component from 'inferno-component'
+import { Component } from 'inferno'
 import { CrossFade, Animated } from '../../index'
 
 function PageOne (props) {
