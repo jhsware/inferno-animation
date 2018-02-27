@@ -41,7 +41,7 @@ export const animateOnRemove = function (component, animationName, callback) {
 
   clone.style.height = height + 'px'
   clone.style.width = width + 'px'
-  _addClassName(clone, animCls.start)
+  animCls.start && _addClassName(clone, animCls.start)
 
   // Leaving original element so it can be removed in the normal way
   domEl.style['display'] = 'none !important'
@@ -123,7 +123,7 @@ export const animateOnAdd = function (component, animationName, callback) {
 
   // 1. Get height and set start of animation
   const { width, height } = node.getBoundingClientRect()
-  _addClassName(node, animCls.start)
+  animCls.start && _addClassName(node, animCls.start)
 
 
   // 2. Set an animation listener, code at end
