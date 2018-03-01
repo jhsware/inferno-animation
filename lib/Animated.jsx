@@ -2,6 +2,7 @@
 import { Component } from 'inferno'
 import { createElement } from 'inferno-create-element'
 import { animateOnAdd, animateOnRemove } from './animatedComponent'
+import { animateBootstrapOnAdd, animateBootstrapOnRemove } from './animatedBootstrap'
 
 const excludeProps = {
   el: true,
@@ -12,47 +13,55 @@ const excludeProps = {
   children: true
 }
 
-class Animated extends Component {
-
-  componentDidMount () {
-    let cls = this.props.bootstrapCls
-    if (cls) {
-      cls = {
-        start: undefined, // ''
-        active: cls.active, // 'collapsing'
-        end: cls.show // 'collapse show'
-      }
+function OriginalAnimated (props) {
+  const attr = {}
+  const keys = Object.keys(props)
+  for (let i = 0; i < keys.length; i++) {
+    let tmpKey = keys[i]
+    if (!excludeProps[tmpKey]) {
+      attr[tmpKey] = props[tmpKey]
     }
-    animateOnAdd(this, cls || this.props.prefix, this.props.onDidEnter)
   }
 
-  componentWillUnmount () {
-    let cls = this.props.bootstrapCls
-    if (cls) {
-      cls = {
-        start: cls.show, // 'collapse show'
-        active: cls.active, // 'collapsing'
-        end: cls.hide // 'collapse'
-      }
+  return createElement(
+    props.el || props.tag || 'div', 
+    attr, 
+    props.children
+  )
+}
+
+
+function BootstrapAnimated (props) {
+  const attr = {}
+  const keys = Object.keys(props)
+  for (let i = 0; i < keys.length; i++) {
+    let tmpKey = keys[i]
+    if (!excludeProps[tmpKey]) {
+      attr[tmpKey] = props[tmpKey]
     }
-    animateOnRemove(this, cls || this.props.prefix, this.props.onDidLeave)
   }
 
-  render () {
-    const props = {}
-    const keys = Object.keys(this.props)
-    for (let i = 0; i < keys.length; i++) {
-      let tmpKey = keys[i]
-      if (!excludeProps[tmpKey]) {
-        props[tmpKey] = this.props[tmpKey]
-      }
-    }
+  return createElement(
+    props.el || props.tag || 'div', 
+    attr, 
+    props.children
+  )
+}
 
-    return createElement(
-      this.props.el || this.props.tag || 'div', 
-      props, 
-      this.props.children
-    )
+function Animated (props) {
+  if (props.target === 'bootstrap') {
+    const animCls = {
+      start: props.prefix.hide, // 'collapse'
+      active: props.prefix.active, // 'collapsing'
+      end: props.prefix.show // 'collapse show'
+    }
+    return <BootstrapAnimated {...props}
+      onComponentDidMount={(dom) => animateBootstrapOnAdd(dom, animCls, props.onDidEnter)}
+      onComponentWillUnmount={(dom) => animateBootstrapOnRemove(dom, animCls, props.onDidLeave)} />
+  } else {
+    return <OriginalAnimated {...props}
+      onComponentDidMount={(dom) => animateOnAdd(dom, props.prefix, props.onDidEnter)}
+      onComponentWillUnmount={(dom) => animateOnRemove(dom, props.prefix, props.onDidLeave)} />
   }
 }
 
