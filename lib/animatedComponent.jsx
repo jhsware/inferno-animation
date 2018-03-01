@@ -18,8 +18,7 @@ function _removeClassName (node, className) {
   }
 }
 
-export const animateOnRemove = function (component, animationName, callback) {
-  const domEl = component.$V.dom
+export const animateOnRemove = function (domEl, animationName, callback) {
   // Do not animate if this class is set (should I do this by passing prop through context?)
   if (domEl.closest && domEl.closest('.InfernoAnimation--noAnim')) {
     return
@@ -102,9 +101,7 @@ export const animateOnRemove = function (component, animationName, callback) {
   }, 5)
 }
 
-export const animateOnAdd = function (component, animationName, callback) {
-  const node = component.$V.dom
-
+export const animateOnAdd = function (node, animationName, callback) {
   // Do not animate if this class is set (should I do this by passing prop through context?)
   if (node.closest && node.closest('.InfernoAnimation--noAnim')) {
     return
@@ -178,7 +175,7 @@ export const animateOnAdd = function (component, animationName, callback) {
       node.style.height = height + 'px'
       node.style.width = width + 'px'
     }
-    _addClassName(node, animCls.end)
     _removeClassName(node, animCls.start)
+    _addClassName(node, animCls.end)
   }, 5)
 }

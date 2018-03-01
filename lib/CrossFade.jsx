@@ -145,12 +145,13 @@ class CrossFadeItem extends Component {
 
   componentDidMount () {
     this.props.onEnter(this.$V)
-    setTimeout(() => animateOnAdd(this, this.props.prefix), 1)
+    setTimeout(() => animateOnAdd(this.$V.dom, this.props.prefix), 1)
   }
 
   componentWillUnmount () {
     this.props.onLeave(this.$V)
-    setTimeout(() => animateOnRemove(this, this.props.prefix), 1)
+    const dom = this.$V.dom
+    setTimeout(() => animateOnRemove(dom, this.props.prefix), 1)
   }
 
   render () {
