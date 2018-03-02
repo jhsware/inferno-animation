@@ -1,5 +1,10 @@
 # inferno-animation
 
+Version compatibility:
+- >=0.5.x Inferno 4.x
+- <=0.4.x Inferno <= 3.x
+
+
 Library to animate Inferno components on mount and dismount. Also supports cross-fade, where height and/or
 width animates from source size to target size.
 
@@ -35,10 +40,6 @@ these timeouts by setting:
 window.debugAnimations = true
 
 ```
-
-## Version compatibility
-0.5.x Inferno 4.x
-0.4.x Inferno <= 3.x
 
 ## Animate component on add or remove
 
