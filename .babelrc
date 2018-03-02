@@ -1,7 +1,8 @@
 {
   "presets": ["es2015", "stage-0"],
   "plugins": [
-    [ "babel-plugin-inferno", { "imports": true } ],
-    "add-module-exports"
+    "transform-object-rest-spread",
+    "add-module-exports",
+    [ "babel-plugin-inferno", { "imports": true } ]
   ]
 }

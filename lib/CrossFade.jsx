@@ -3,69 +3,51 @@ import { Component } from 'inferno'
 import { createElement } from 'inferno-create-element'
 import { animateOnAdd, animateOnRemove } from './animatedComponent'
 
-const animateSizeChange = function (component, animationName, sourceSize, targetSize) {
-  const node = component.$V.dom
-  // Do not animate if this class is set (should I do this by passing prop through context?)
-  if (node.closest('.InfernoAnimation--noAnim')) {
-    return
-  }
+import {
+  addClassName,
+  animationIsRunningOnParent,
+  removeClassName,
+  registerTransitionListener,
+  forceReflow,
+  clearDimensions,
+  getDimensions,
+  setDimensions,
+  setDisplay,
+  doAnimate  } from './utils'
 
-  // 1. Get height and set start of animation
-  node.style.height = sourceSize.height + 'px'
-  node.style.width = sourceSize.width + 'px'
+const animateSizeChange = function (node, animationName, sourceSize, targetSize) {
+  if (animationIsRunningOnParent(node)) return
 
+  // 1. Set dimensions
+  setDimensions(node, sourceSize.width, sourceSize.height)
+  // node.style.height = sourceSize.height + 'px'
+  // node.style.width = sourceSize.width + 'px'
+  forceReflow(node)
 
   // 2. Set an animation listener, code at end
-  var done = false
-  var nrofTransitionsLeft
-  const onTransitionEnd = (event) => {
-    // Make sure it isn't a child that is triggering the event
-    if (event && event.target !== node) {
-      return
-    }
-    if (event !== undefined && nrofTransitionsLeft > 0) {
-      nrofTransitionsLeft--
-      return
-    }
-    if (done) return
-    done = true
-    // 5. Remove the element
-    // Note: If I don't declare an anonymous function immediately here this callback isn't called!
-    node.style.height = node.style.width = ''
+  registerTransitionListener(node, function () {
+    // *** Cleanup ***
+    // callback && callback(clone)
+    clearDimensions(node)
     node.classList.remove(animationName + '-cross-fade-active')
-  }
-  node.addEventListener("transitionend", onTransitionEnd, false)
-  const dummy = node.clientHeight
+  })
 
   // 3. Activate transition
   node.classList.add(animationName + '-cross-fade-active')
-
-  const cs = window.getComputedStyle(node)
-  const dur = cs.getPropertyValue('transition-duration').split(',')
-  const del = cs.getPropertyValue('transition-delay').split(',')
-  const animTimeout = dur.map((v, index) => parseFloat(v) + parseFloat(del[index])).reduce((prev, curr) => prev > curr ? prev : curr, 0)
-  nrofTransitionsLeft = dur.length - 1
-  !window.debugAnimations && setTimeout(onTransitionEnd, Math.round(animTimeout * 1000) + 100) // Fallback if transitionend fails
-
-  /*
-  console.log('----- transition-duration', cs.getPropertyValue('transition-duration'))
-  console.log('----- transition-delay', cs.getPropertyValue('transition-delay'))
-  console.log('----- animTimeout', Math.round(animTimeout * 1000) + 50)
-  */
   
   // 4. Activate target state
   setTimeout(() => {
-    node.style.height = targetSize.height + 'px'
-    node.style.width = targetSize.width + 'px'
+    setDimensions(node, targetSize.width, targetSize.height)
   }, 5)
 }
 
 function _getSizeOfCrossFadeVnode (vNode) {
   const domEl = vNode.dom.parentElement
   domEl.classList.add('InfernoAnimation--getSize')
-  const { width, height } = domEl.getBoundingClientRect()
+  forceReflow(domEl)
+  const outpDimensions = getDimensions(domEl)
   domEl.classList.remove('InfernoAnimation--getSize')
-  return { width, height }
+  return outpDimensions
 }
 
 class CrossFade extends Component {
@@ -83,7 +65,7 @@ class CrossFade extends Component {
 
   _animationCheck () {
     if (this.state.active && this.targetSize && this.sourceSize && this.$V.dom) {
-      animateSizeChange(this, this.props.prefix, this.sourceSize, this.targetSize)
+      animateSizeChange(this.$V.dom, this.props.prefix, this.sourceSize, this.targetSize)
       this.targetSize = this.sourceSize = undefined
     }
   }
@@ -145,13 +127,14 @@ class CrossFadeItem extends Component {
 
   componentDidMount () {
     this.props.onEnter(this.$V)
-    setTimeout(() => animateOnAdd(this.$V.dom, this.props.prefix), 1)
+    const node = this.$V.dom
+    setTimeout(() => animateOnAdd(node, this.props.prefix))
   }
 
   componentWillUnmount () {
     this.props.onLeave(this.$V)
-    const dom = this.$V.dom
-    setTimeout(() => animateOnRemove(dom, this.props.prefix), 1)
+    const node = this.$V.dom
+    setTimeout(() => animateOnRemove(node, this.props.prefix))
   }
 
   render () {
