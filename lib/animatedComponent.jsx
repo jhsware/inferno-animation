@@ -1,29 +1,19 @@
 import { cloneVNode } from 'inferno'
+import {
+  addClassName,
+  animationIsRunningOnParent,
+  removeClassName,
+  registerTransitionListener,
+  forceReflow,
+  clearDimensions,
+  getDimensions,
+  setDimensions,
+  setDisplay,
+  doAnimate  } from './utils'
 
-function _addClassName (node, className) {
-  if (className) {
-    const tmp = className.split(' ')
-    for (let i=0; i < tmp.length; i++) {
-      node.classList.add(tmp[i])
-    }
-  }
-}
+export const animateOnRemove = function (node, animationName, callback) {
+  if (animationIsRunningOnParent(node)) return
 
-function _removeClassName (node, className) {
-  if (className) {
-    const tmp = className.split(' ')
-    for (let i=0; i < tmp.length; i++) {
-      node.classList.remove(tmp[i])
-    }
-  }
-}
-
-export const animateOnRemove = function (domEl, animationName, callback) {
-  // Do not animate if this class is set (should I do this by passing prop through context?)
-  if (domEl.closest && domEl.closest('.InfernoAnimation--noAnim')) {
-    return
-  }
-  
   let animCls = {}
   if (typeof animationName === 'object') {
     animCls = animationName
@@ -34,78 +24,34 @@ export const animateOnRemove = function (domEl, animationName, callback) {
   }
 
   // 1. Clone DOM node, inject it and hide original
-  const clone = domEl.cloneNode(true)
-
-  const { width, height } = domEl.getBoundingClientRect()
-
-  clone.style.height = height + 'px'
-  clone.style.width = width + 'px'
-  animCls.start && _addClassName(clone, animCls.start)
-
+  const clone = node.cloneNode(true)
+  const { width, height } = getDimensions(node)
+  setDimensions(clone, width, height)
+  addClassName(clone, animCls.start)
   // Leaving original element so it can be removed in the normal way
-  domEl.style['display'] = 'none !important'
-  domEl.insertAdjacentElement('beforebegin', clone)
+  setDisplay(node, 'none !important')
+  node.insertAdjacentElement('beforebegin', clone)
 
   // 2. Set an animation listener, code at end
-  var done = false
-  var nrofTransitionsLeft
-  const onTransitionEnd = (event) => {
-    // Make sure it isn't a child that is triggering the event
-    if (event && event.target !== clone) {
-      return
-    }
-    if (event !== undefined && nrofTransitionsLeft > 0) {
-      nrofTransitionsLeft--
-      return
-    }
-    if (done) return
-    done = true
-
-    // 5. Call callback to allow stuff to happen
+  registerTransitionListener(clone, function () {
+    // *** Cleanup ***
     callback && callback(clone)
-
-    // 6. Remove the element
-    // Note: If I don't declare an anonymous function immediately here this callback isn't called!
-    // const parent = clone.parentElement
-    // parent.removeChild(clone)
-    // Why does inferno use removeChild?
     clone.remove()
-    // console.log('----- removed')
-  }
+  })
 
-  clone.addEventListener("transitionend", onTransitionEnd, false)
   // 3. Activate transitions
-  _addClassName(clone, animCls.active)
-  // The following is needed so we can prevent nested animations from playing slower
-  // than parent animation causing a jump (in for example a cross-fade)
-  clone.classList.add('InfernoAnimation-active')
-
-  const cs = window.getComputedStyle(clone)
-  const dur = cs.getPropertyValue('transition-duration').split(',')
-  const del = cs.getPropertyValue('transition-delay').split(',')
-  const animTimeout = dur.map((v, index) => parseFloat(v) + parseFloat(del[index])).reduce((prev, curr) => prev > curr ? prev : curr, 0)
-  nrofTransitionsLeft = dur.length - 1
-  !window.debugAnimations && setTimeout(onTransitionEnd, Math.round(animTimeout * 1000) + 100) // Fallback if transitionend fails
-
-  /*
-  console.log('----- transition-duration', cs.getPropertyValue('transition-duration'))
-  console.log('----- transition-delay', cs.getPropertyValue('transition-delay'))
-  console.log('----- animTimeout', Math.round(animTimeout * 1000) + 50)
-  */
+  addClassName(clone, animCls.active)
 
   // 4. Activate target state
   setTimeout(() => {
-    _addClassName(clone, animCls.end)
-    _removeClassName(clone, animCls.start)
-    clone.style.height = clone.style.width = ''
+    addClassName(clone, animCls.end)
+    removeClassName(clone, animCls.start)
+    clearDimensions(clone)
   }, 5)
 }
 
 export const animateOnAdd = function (node, animationName, callback) {
-  // Do not animate if this class is set (should I do this by passing prop through context?)
-  if (node.closest && node.closest('.InfernoAnimation--noAnim')) {
-    return
-  }
+  if (animationIsRunningOnParent(node)) return
 
   let animCls = {}
   if (typeof animationName === 'object') {
@@ -116,66 +62,30 @@ export const animateOnAdd = function (node, animationName, callback) {
     animCls['end'] = animationName + '-enter-end'
   }
 
-  const isDisplayNone = window.getComputedStyle(node).getPropertyValue('display') === 'none'
-
   // 1. Get height and set start of animation
-  const { width, height } = node.getBoundingClientRect()
-  animCls.start && _addClassName(node, animCls.start)
-
+  const { width, height } = getDimensions(node)
+  addClassName(node, animCls.start)
+  forceReflow()
 
   // 2. Set an animation listener, code at end
-  var done = false
-  var nrofTransitionsLeft
-  const onTransitionEnd = (event) => {
-    // Make sure it isn't a child that is triggering the event
-    if (event && event.target !== node) {
-      return
-    }
-    if (event !== undefined && nrofTransitionsLeft > 0) {
-      nrofTransitionsLeft--
-      return
-    }
-    if (done) return
-    done = true
+  registerTransitionListener([node, node.children[0]], function () {
+    // *** Cleanup ***
     // 5. Remove the element
-    // Note: If I don't declare an anonymous function immediately here this callback isn't called!
-    node.style.height = node.style.width = ''
-    _removeClassName(node, animCls.active)
-    _removeClassName(node, animCls.end)
-    node.classList.remove('InfernoAnimation-active')
+    clearDimensions(node)
+    removeClassName(node, animCls.active)
+    removeClassName(node, animCls.end)
     
     // 6. Call callback to allow stuff to happen
     callback && callback(node)
-  }
-  node.addEventListener("transitionend", onTransitionEnd, false)
-  const dummy = node.clientHeight
+  })
 
   // 3. Activate transition
-  _addClassName(node, animCls.active)
-  // The following is needed so we can prevent nested animations from playing slower
-  // than parent animation causing a jump (in for example a cross-fade)
-  node.classList.add('InfernoAnimation-active')
-
-  const cs = window.getComputedStyle(node)
-  const dur = cs.getPropertyValue('transition-duration').split(',')
-  const del = cs.getPropertyValue('transition-delay').split(',')
-  const animTimeout = dur.map((v, index) => parseFloat(v) + parseFloat(del[index])).reduce((prev, curr) => prev > curr ? prev : curr, 0)
-  nrofTransitionsLeft = dur.length - 1
-  !window.debugAnimations && setTimeout(onTransitionEnd, Math.round(animTimeout * 1000) + 100) // Fallback if transitionend fails
-
-  /*
-  console.log('----- transition-duration', cs.getPropertyValue('transition-duration'))
-  console.log('----- transition-delay', cs.getPropertyValue('transition-delay'))
-  console.log('----- animTimeout', Math.round(animTimeout * 1000) + 50)
-  */
-  
+  addClassName(node, animCls.active)
+ 
   // 4. Activate target state
   setTimeout(() => {
-    if (!isDisplayNone) {
-      node.style.height = height + 'px'
-      node.style.width = width + 'px'
-    }
-    _removeClassName(node, animCls.start)
-    _addClassName(node, animCls.end)
+    setDimensions(node, width, height)
+    removeClassName(node, animCls.start)
+    addClassName(node, animCls.end)
   }, 5)
 }
