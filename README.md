@@ -85,7 +85,7 @@ const enterCls = {
   end: 'didEnterClass'
 }
 componentDidMount () {
-  animateOnAdd(this, enterCls, (el) => {
+  animateOnAdd(this.$V.dom, enterCls, (el) => {
     // Element 'el' is now visible
   })
 }
@@ -96,7 +96,7 @@ const leaveCls = {
   end: 'didLeaveClass'
 }
 componentWillUnmount () {
-  animateOnRemove(this, leaveCls, (el) => { 
+  animateOnRemove(this.$V.dom, leaveCls, (el) => { 
     // Element 'el' will be removed when this callback has returned
   })
 }
