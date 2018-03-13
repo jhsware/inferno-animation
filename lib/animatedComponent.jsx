@@ -1,4 +1,3 @@
-import { cloneVNode } from 'inferno'
 import {
   addClassName,
   animationIsRunningOnParent,
