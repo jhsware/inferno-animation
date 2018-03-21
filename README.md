@@ -1,6 +1,8 @@
 # inferno-animation
 
 ## Compatibility
+inferno-animation 5.x supports Inferno v5
+
 inferno-animation 4.x supports Inferno v4
 
 inferno-animation 3.x supports Inferno v3
