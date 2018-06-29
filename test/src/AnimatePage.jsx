@@ -1,5 +1,5 @@
 import { Component } from 'inferno'
-import { Animated } from '../../index'
+import { Animated } from 'inferno-animation'
 
 function Content (props) {
   return (

@@ -39,5 +39,10 @@ module.exports = {
         plugins: babelPlugins
       }
     }]
+  },
+  resolve: {
+    alias: {
+      'inferno-animation': path.resolve(__dirname, '../lib/index.js')
+    }
   }
 }
