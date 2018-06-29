@@ -7,8 +7,8 @@ import {
   clearDimensions,
   getDimensions,
   setDimensions,
-  setDisplay,
-  doAnimate  } from './utils'
+  setDisplay
+} from './utils'
 
 export const animateOnRemove = function (node, animationName, callback) {
   if (animationIsRunningOnParent(node)) return

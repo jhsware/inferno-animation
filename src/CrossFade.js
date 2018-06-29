@@ -1,19 +1,15 @@
-'use strict'
 import { Component } from 'inferno'
 import { createElement } from 'inferno-create-element'
 import { animateOnAdd, animateOnRemove } from './animatedComponent'
 
 import {
-  addClassName,
   animationIsRunningOnParent,
-  removeClassName,
   registerTransitionListener,
   forceReflow,
   clearDimensions,
   getDimensions,
-  setDimensions,
-  setDisplay,
-  doAnimate  } from './utils'
+  setDimensions
+} from './utils'
 
 const animateSizeChange = function (node, animationName, sourceSize, targetSize) {
   if (animationIsRunningOnParent(node)) return

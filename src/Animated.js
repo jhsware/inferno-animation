@@ -1,5 +1,3 @@
-'use strict'
-import { Component } from 'inferno'
 import { createElement } from 'inferno-create-element'
 import { animateOnAdd, animateOnRemove } from './animatedComponent'
 
