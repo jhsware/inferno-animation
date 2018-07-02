@@ -5,10 +5,6 @@
   "main": "dist/cjs/index.js",
   "umd:main": "dist/umd/index.js",
   "module": "lib/index.js",
-  "files": [
-    "dist",
-    "lib"
-  ],
   "scripts": {
     "test": "npm run build && npm run build-test",
     "test-browser": "npm run build-test && node test/server.js",
