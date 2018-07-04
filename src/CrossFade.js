@@ -60,8 +60,8 @@ class CrossFade extends Component {
   }
 
   _animationCheck () {
-    if (this.state.active && this.targetSize && this.sourceSize && this.$V.dom) {
-      animateSizeChange(this.$V.dom, this.props.prefix, this.sourceSize, this.targetSize)
+    if (this.state.active && this.targetSize && this.sourceSize && this.$LI.dom) {
+      animateSizeChange(this.$LI.dom, this.props.prefix, this.sourceSize, this.targetSize)
       this.targetSize = this.sourceSize = undefined
     }
   }
@@ -122,14 +122,14 @@ function CrossFadeItem (props) {
 class CrossFadeItem extends Component {
 
   componentDidMount () {
-    this.props.onEnter(this.$V)
-    const node = this.$V.dom
+    this.props.onEnter(this.$LI)
+    const node = this.$LI.dom
     setTimeout(() => animateOnAdd(node, this.props.prefix))
   }
 
   componentWillUnmount () {
-    this.props.onLeave(this.$V)
-    const node = this.$V.dom
+    this.props.onLeave(this.$LI)
+    const node = this.$LI.dom
     setTimeout(() => animateOnRemove(node, this.props.prefix))
   }
 

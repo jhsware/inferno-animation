@@ -72,6 +72,6 @@
     "inferno": "=>5"
   },
   "dependencies": {
-    "inferno-create-element": "^5.0.1"
+    "inferno-create-element": "^5.3.0"
   }
 }
