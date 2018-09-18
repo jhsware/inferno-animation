@@ -42,7 +42,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'inferno-animation': path.resolve(__dirname, '../lib/index.js')
+      'inferno-animation': path.resolve(__dirname, '../src/index.js')
     }
   }
 }
