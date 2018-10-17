@@ -2,9 +2,9 @@ const webpack = require('webpack')
 const path = require('path')
 
 const babelPlugins = [
-  'transform-decorators-legacy',
+  ["@babel/proposal-decorators", { "legacy": true}],
   // ['transform-runtime'], // This includes a package with polyfills etc, but the final size is larger because unused polyfills aren't removed
-  'babel-plugin-syntax-jsx',
+  '@babel/plugin-syntax-jsx',
   [
     'babel-plugin-inferno',
     {
