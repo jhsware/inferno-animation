@@ -82,6 +82,7 @@ Example:
 
 ```JavaScript
 import { animateOnAdd, animateOnRemove } from 'inferno-animation'
+import { findDOMNode } from 'inferno-extras'
 
 const enterCls = {
   start: 'willEnter',
@@ -89,7 +90,7 @@ const enterCls = {
   end: 'didEnterClass'
 }
 componentDidMount () {
-  animateOnAdd(this.$LI.dom, enterCls, (el) => {
+  animateOnAdd(findDOMNode(this), enterCls, (el) => {
     // Element 'el' is now visible
   })
 }
@@ -100,7 +101,7 @@ const leaveCls = {
   end: 'didLeaveClass'
 }
 componentWillUnmount () {
-  animateOnRemove(this.$LI.dom, leaveCls, (el) => { 
+  animateOnRemove(findDOMNode(this), leaveCls, (el) => { 
     // Element 'el' will be removed when this callback has returned
   })
 }

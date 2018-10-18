@@ -1,5 +1,6 @@
 import { Component } from 'inferno'
 import { createElement } from 'inferno-create-element'
+import { findDOMNode } from 'inferno-extras'
 import { animateOnAdd, animateOnRemove } from './animatedComponent'
 
 import {
@@ -37,8 +38,8 @@ const animateSizeChange = function (node, animationName, sourceSize, targetSize)
   }, 5)
 }
 
-function _getSizeOfCrossFadeVnode (vNode) {
-  const domEl = vNode.dom.parentElement
+function _getSizeOfCrossFadeDOMNode (DOMNode) {
+  const domEl = DOMNode.parentNode
   domEl.classList.add('InfernoAnimation--getSize')
   forceReflow(domEl)
   const outpDimensions = getDimensions(domEl)
@@ -60,8 +61,8 @@ class CrossFade extends Component {
   }
 
   _animationCheck () {
-    if (this.state.active && this.targetSize && this.sourceSize && this.$LI.dom) {
-      animateSizeChange(this.$LI.dom, this.props.prefix, this.sourceSize, this.targetSize)
+    if (this.state.active && this.targetSize && this.sourceSize && findDOMNode(this)) {
+      animateSizeChange(findDOMNode(this), this.props.prefix, this.sourceSize, this.targetSize)
       this.targetSize = this.sourceSize = undefined
     }
   }
@@ -75,13 +76,13 @@ class CrossFade extends Component {
     }, 10)
   }
 
-  setTargetSize (vNode) {
-    this.targetSize = _getSizeOfCrossFadeVnode(vNode)
+  setTargetSize (DOMNode) {
+    this.targetSize = _getSizeOfCrossFadeDOMNode(DOMNode)
     this._animationCheck()
   }
 
-  setSourceSize (vNode) {
-    this.sourceSize = _getSizeOfCrossFadeVnode(vNode)
+  setSourceSize (DOMNode) {
+    this.sourceSize = _getSizeOfCrossFadeDOMNode(DOMNode)
     this._animationCheck()
   }
 
@@ -122,14 +123,14 @@ function CrossFadeItem (props) {
 class CrossFadeItem extends Component {
 
   componentDidMount () {
-    this.props.onEnter(this.$LI)
-    const node = this.$LI.dom
+    const node = findDOMNode(this)
+    this.props.onEnter(node)
     setTimeout(() => animateOnAdd(node, this.props.prefix))
   }
 
   componentWillUnmount () {
-    this.props.onLeave(this.$LI)
-    const node = this.$LI.dom
+    const node = findDOMNode(this)
+    this.props.onLeave(node)
     setTimeout(() => animateOnRemove(node, this.props.prefix))
   }
 
