@@ -19,7 +19,6 @@ const baseConfig = (outputFormat) => {
 
   return {
     input: 'src/index.js',
-    runtimeHelpers: true,
     plugins: [
       nodeResolve(),
       babel({
