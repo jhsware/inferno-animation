@@ -2,6 +2,10 @@
 [![gzip size](http://img.badgesize.io/https://unpkg.com/inferno-animation/dist/cjs/index.min.js?compression=gzip)](https://unpkg.com/inferno-animation/dist/cjs/index.min.js)
 
 ## Compatibility
+inferno-animation 7.x supports Inferno v7
+
+inferno-animation 6.x supports Inferno v6
+
 inferno-animation 5.x supports Inferno v5
 
 inferno-animation 4.x supports Inferno v4

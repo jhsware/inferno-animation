@@ -54,15 +54,16 @@
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
     "babel-plugin-add-module-exports": "^1.0.0",
-    "babel-plugin-inferno": "6.0.0",
-    "babel-preset-inferno-app": "^8.0.1",
+    "babel-plugin-inferno": "6.0.4",
+    "babel-preset-inferno-app": "^8.0.3",
     "component-registry": "1.0.0-rc.7",
-    "create-inferno-app": "^7.0.5",
+    "create-inferno-app": "^7.0.6",
     "cross-env": "^5.2.0",
     "express": "^4.16.2",
-    "inferno": "^6.0.1",
-    "inferno-extras": "^6.0.3",
-    "inferno-router": "^6.0.1",
+    "inferno": "^7.0.4",
+    "inferno-animation": "^6.0.1",
+    "inferno-extras": "^7.0.4",
+    "inferno-router": "^7.0.4",
     "isomorphic-schema": "1.0.0-beta.7",
     "rollup": "^0.66.6",
     "rollup-plugin-babel": "^4.0.3",
@@ -74,9 +75,9 @@
     "webpack": "^3.11.0"
   },
   "peerDependencies": {
-    "inferno": "=>6"
+    "inferno": "=>7"
   },
   "dependencies": {
-    "inferno-create-element": "^6.0.1"
+    "inferno-create-element": "^7.0.4"
   }
 }
