@@ -60,10 +60,10 @@
     "create-inferno-app": "^7.0.6",
     "cross-env": "^5.2.0",
     "express": "^4.16.2",
-    "inferno": "^7.0.4",
+    "inferno": "^7.3.3",
     "inferno-animation": "^6.0.1",
-    "inferno-extras": "^7.0.4",
-    "inferno-router": "^7.0.4",
+    "inferno-extras": "^7.3.3",
+    "inferno-router": "^7.3.3",
     "isomorphic-schema": "1.0.0-beta.7",
     "rollup": "^0.66.6",
     "rollup-plugin-babel": "^4.0.3",
@@ -78,6 +78,6 @@
     "inferno": "=>7"
   },
   "dependencies": {
-    "inferno-create-element": "^7.0.4"
+    "inferno-create-element": "^7.3.3"
   }
 }
