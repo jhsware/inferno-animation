@@ -101,25 +101,27 @@ function _getMaxTransitionDuration (/* add nodes as args*/) {
 }
 
 function whichTransitionEvent(){
-  var t;
-  var el = document.createElement('fakeelement');
-  var transitions = {
-    'transition':'transitionend',
-    'OTransition':'oTransitionEnd',
-    'MozTransition':'transitionend',
-    'WebkitTransition':'webkitTransitionEnd'
+  try {
+    var t;
+    var el = document.createElement('fakeelement');
+    var transitions = {
+      'transition':'transitionend',
+      'OTransition':'oTransitionEnd',
+      'MozTransition':'transitionend',
+      'WebkitTransition':'webkitTransitionEnd'
+    }
+  
+    for(t in transitions){
+        if( el.style[t] !== undefined ){
+            return transitions[t];
+        }
+    }
   }
-
-  for(t in transitions){
-      if( el.style[t] !== undefined ){
-          return transitions[t];
-      }
+  catch (e) {
+    return 'serverside'
   }
 }
-var transitionEndName = 'serverside'
-if (typeof document !== undefined) {
-  transitionEndName = whichTransitionEvent()
-}
+var transitionEndName = whichTransitionEvent()
 
 export function registerTransitionListener(nodes, callback) {
   if (!Array.isArray(nodes)) {
