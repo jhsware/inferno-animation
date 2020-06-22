@@ -101,29 +101,30 @@ function _getMaxTransitionDuration (/* add nodes as args*/) {
 }
 
 function whichTransitionEvent(){
-  try {
-    var t;
-    var el = document.createElement('fakeelement');
-    var transitions = {
-      'transition':'transitionend',
-      'OTransition':'oTransitionEnd',
-      'MozTransition':'transitionend',
-      'WebkitTransition':'webkitTransitionEnd'
-    }
-  
-    for(t in transitions){
-        if( el.style[t] !== undefined ){
-            return transitions[t];
-        }
-    }
+  var t;
+  var el = document.createElement('fakeelement');
+  var transitions = {
+    'transition':'transitionend',
+    'OTransition':'oTransitionEnd',
+    'MozTransition':'transitionend',
+    'WebkitTransition':'webkitTransitionEnd'
   }
-  catch (e) {
-    return 'serverside'
+
+  for(t in transitions){
+      if( el.style[t] !== undefined ){
+          return transitions[t];
+      }
   }
 }
-var transitionEndName = whichTransitionEvent()
+var transitionEndName
 
 export function registerTransitionListener(nodes, callback) {
+  // I am doing this lazily because there where issues with document being undefined
+  // and checks seemed to go bust due to transpilation
+  if (!transitionEndName) {
+    transitionEndName = whichTransitionEvent()
+  }
+
   if (!Array.isArray(nodes)) {
     nodes = [nodes]
   }
