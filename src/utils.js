@@ -100,6 +100,25 @@ function _getMaxTransitionDuration (/* add nodes as args*/) {
   }
 }
 
+function whichTransitionEvent(){
+  var t;
+  var el = document.createElement('fakeelement');
+  var transitions = {
+    'transition':'transitionend',
+    'OTransition':'oTransitionEnd',
+    'MozTransition':'transitionend',
+    'WebkitTransition':'webkitTransitionEnd'
+  }
+
+  for(t in transitions){
+      if( el.style[t] !== undefined ){
+          return transitions[t];
+      }
+  }
+}
+var transitionEndName = typeof window === undefined ? 'serverside' : whichTransitionEvent()
+
+
 export function registerTransitionListener(nodes, callback) {
   if (!Array.isArray(nodes)) {
     nodes = [nodes]
@@ -136,10 +155,10 @@ export function registerTransitionListener(nodes, callback) {
     /**
      * Perform cleanup
      */ 
-    rootNode.removeEventListener("transitionend", onTransitionEnd, false)
+    rootNode.removeEventListener(transitionEndName, onTransitionEnd, false)
     callback && callback()
   }
-  rootNode.addEventListener("transitionend", onTransitionEnd, false)
+  rootNode.addEventListener(transitionEndName, onTransitionEnd, false)
   // Fallback if transitionend fails
   !window.debugAnimations && setTimeout(onTransitionEnd, Math.round(maxDuration * 1000) + 100) 
 }
