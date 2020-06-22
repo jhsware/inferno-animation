@@ -116,7 +116,7 @@ function whichTransitionEvent(){
       }
   }
 }
-var transitionEndName = typeof window === undefined ? 'serverside' : whichTransitionEvent()
+var transitionEndName = typeof document === undefined ? 'serverside' : whichTransitionEvent()
 
 
 export function registerTransitionListener(nodes, callback) {
