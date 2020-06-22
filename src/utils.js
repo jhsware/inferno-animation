@@ -116,8 +116,10 @@ function whichTransitionEvent(){
       }
   }
 }
-var transitionEndName = typeof document === undefined ? 'serverside' : whichTransitionEvent()
-
+var transitionEndName = 'serverside'
+if (typeof document !== undefined) {
+  transitionEndName = whichTransitionEvent()
+}
 
 export function registerTransitionListener(nodes, callback) {
   if (!Array.isArray(nodes)) {
