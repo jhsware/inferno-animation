@@ -128,6 +128,10 @@ export function registerTransitionListener(nodes, callback) {
   if (!Array.isArray(nodes)) {
     nodes = [nodes]
   }
+  else {
+    // Make sure we don't have undefined nodes (happens when an animated el doesn't have children)
+    nodes = nodes.filter((node) => node)
+  }
   const rootNode = nodes[0]
 
   rootNode.classList.add('InfernoAnimation-active')
@@ -139,17 +143,19 @@ export function registerTransitionListener(nodes, callback) {
   let done = false
 
   function onTransitionEnd (event) {
-    // Make sure it isn't a child that is triggering the event
-    if (event) {
-      var goAhead = false
-      for (var i=0; i < nodes.length; i++) {
-        if (event.target === nodes[i]) {
-          goAhead = true
-          break
-        }
-      }
-      if (!goAhead) return
+    // Make sure this is an actual event
+    if (!event) {
+      return
     }
+    // Make sure it isn't a child that is triggering the event
+    var goAhead = false
+    for (var i=0; i < nodes.length; i++) {
+      if (event.target === nodes[i]) {
+        goAhead = true
+        break
+      }
+    }
+    if (!goAhead) return
 
     if (done || (event !== undefined && --nrofTransitionsLeft > 0)) {
       return
