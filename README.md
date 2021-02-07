@@ -138,6 +138,12 @@ import { Animated } from 'inferno-animation'
 </Animated>
 ```
 
+Note you can get a reference to the rendered dom element by passing a callback as prop `domRef`:
+
+```JavaScript
+<Animated key={...} domRef={(domEl) => this._el = domEl} prefix="PageAnimation">...</Animated>
+```
+
 When you add and remove the `Animated` container it will animate according to your CSS-rules.
 
 ## Define your animations with CSS
