@@ -21,9 +21,20 @@ export function forceReflow () {
 }
 
 export function setDisplay(node, value) {
-  var oldVal = node.style.display
+  var oldVal = node.style.getPropertyValue('display')
   if (oldVal !== value) {
-    node.style.display = value
+    if (value) {
+      node.style.setProperty('display', value)
+    }
+    else {
+      if (node.style.length === 1 && node.style.hasOwnProperty('display')) {
+        // If it is the only style prop then we remove it entirely
+        node.removeAttribute('style')
+      }
+      else {
+        node.style.removeProperty('display')
+      }
+    }
   }
   return oldVal
 }
@@ -35,16 +46,17 @@ function _cleanStyle(node) {
 }
 
 export function getDimensions(node) {
-  var tmpDisplay = node.style.display
+  var tmpDisplay = node.style.getPropertyValue('display')
   var isDisplayNone = window.getComputedStyle(node).getPropertyValue('display') === 'none'
   if (isDisplayNone) {
-    node.style.display = 'block'
+    node.style.setProperty('display', 'block')
   }
   
   var tmp = node.getBoundingClientRect()
 
   if (isDisplayNone) {
-    node.style.display = tmpDisplay
+    // node.style.display = tmpDisplay
+    node.style.setProperty('display', tmpDisplay)
     _cleanStyle(node)
   }
 
