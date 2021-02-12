@@ -156,32 +156,38 @@ export function registerTransitionListener(nodes, callback) {
 
   function onTransitionEnd (event) {
     // Make sure this is an actual event
-    if (!event) {
+    if (!event || done) {
       return
     }
-    // Make sure it isn't a child that is triggering the event
-    var goAhead = false
-    for (var i=0; i < nodes.length; i++) {
-      if (event.target === nodes[i]) {
-        goAhead = true
-        break
+
+    if (!event.timeout) {
+      // Make sure it isn't a child that is triggering the event
+      var goAhead = false
+      for (var i=0; i < nodes.length; i++) {
+        if (event.target === nodes[i]) {
+          goAhead = true
+          break
+        }
+      }
+      if (!goAhead) return
+  
+      // Wait for all transitions
+      if (--nrofTransitionsLeft > 0) {
+        return
       }
     }
-    if (!goAhead) return
 
-    if (done || (event !== undefined && --nrofTransitionsLeft > 0)) {
-      return
-    }
+    // This is it...
     done = true
-    rootNode.classList.remove('InfernoAnimation-active')
-    
+
     /**
      * Perform cleanup
      */ 
+    rootNode.classList.remove('InfernoAnimation-active')
     rootNode.removeEventListener(transitionEndName, onTransitionEnd, false)
     callback && callback()
   }
   rootNode.addEventListener(transitionEndName, onTransitionEnd, false)
   // Fallback if transitionend fails
-  !window.debugAnimations && setTimeout(onTransitionEnd, Math.round(maxDuration * 1000) + 100) 
+  !window.debugAnimations && setTimeout(() => onTransitionEnd({ target: rootNode, timeout: true }), Math.round(maxDuration * 1000) + 100) 
 }
