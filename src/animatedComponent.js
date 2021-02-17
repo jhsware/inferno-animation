@@ -31,15 +31,16 @@ export const animateOnRemove = function (node, animationName, callback) {
   setDisplay(node, 'none !important')
   node.insertAdjacentElement('beforebegin', clone)
 
-  // 2. Set an animation listener, code at end
+  // 2. Activate transitions
+  addClassName(clone, animCls.active)
+
+  // 3. Set an animation listener, code at end
+  // Needs to be done after activating so timeout is calculated correctly
   registerTransitionListener(clone, function () {
     // *** Cleanup ***
     callback && callback(clone)
     clone.remove()
   })
-
-  // 3. Activate transitions
-  addClassName(clone, animCls.active)
 
   // 4. Activate target state
   setTimeout(() => {
@@ -66,7 +67,11 @@ export const animateOnAdd = function (node, animationName, callback) {
   addClassName(node, animCls.start)
   forceReflow()
 
-  // 2. Set an animation listener, code at end
+  // 2. Activate transition
+  addClassName(node, animCls.active)
+
+  // 3. Set an animation listener, code at end
+  // Needs to be done after activating so timeout is calculated correctly
   registerTransitionListener([node, node.children[0]], function () {
     // *** Cleanup ***
     // 5. Remove the element
@@ -78,9 +83,6 @@ export const animateOnAdd = function (node, animationName, callback) {
     callback && callback(node)
   })
 
-  // 3. Activate transition
-  addClassName(node, animCls.active)
- 
   // 4. Activate target state
   setTimeout(() => {
     setDimensions(node, width, height)
