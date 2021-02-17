@@ -130,7 +130,7 @@ function whichTransitionEvent(){
 }
 var transitionEndName
 
-export function registerTransitionListener(nodes, callback) {
+export function registerTransitionListener(nodes, callback, noTimeout) {
   // I am doing this lazily because there where issues with document being undefined
   // and checks seemed to go bust due to transpilation
   if (!transitionEndName) {
@@ -188,6 +188,19 @@ export function registerTransitionListener(nodes, callback) {
     callback && callback()
   }
   rootNode.addEventListener(transitionEndName, onTransitionEnd, false)
+
   // Fallback if transitionend fails
-  !window.debugAnimations && setTimeout(() => onTransitionEnd({ target: rootNode, timeout: true }), Math.round(maxDuration * 1000) + 100) 
+  // This is disabled during debug so we can set breakpoints
+  if (!window.debugAnimations && !noTimeout) {
+    if (rootNode.nodeName === 'IMG' && !rootNode.complete) {
+      // Image animations should wait for loaded until the timeout is started, otherwise animation will be cut short
+      // due to loading delay
+      rootNode.addEventListener('load', () => {
+        setTimeout(() => onTransitionEnd({ target: rootNode, timeout: true }), Math.round(maxDuration * 1000) + 100) 
+      })
+    }
+    else {
+      setTimeout(() => onTransitionEnd({ target: rootNode, timeout: true }), Math.round(maxDuration * 1000) + 100) 
+    }
+  }
 }
