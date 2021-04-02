@@ -60,9 +60,9 @@
     "create-inferno-app": "^7.0.6",
     "cross-env": "^5.2.0",
     "express": "^4.16.2",
-    "inferno": "^7.4.7",
-    "inferno-extras": "^7.4.7",
-    "inferno-router": "^7.4.7",
+    "inferno": "^7.4.8",
+    "inferno-extras": "^7.4.8",
+    "inferno-router": "^7.4.8",
     "isomorphic-schema": "^1.2.1",
     "rollup": "^0.66.6",
     "rollup-plugin-babel": "^4.0.3",
@@ -74,9 +74,9 @@
     "webpack": "^3.11.0"
   },
   "peerDependencies": {
-    "inferno": "=>7"
+    "inferno": ">=7"
   },
   "dependencies": {
-    "inferno-create-element": "^7.3.3"
+    "inferno-create-element": "^7.4.8"
   }
 }
