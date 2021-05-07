@@ -10,7 +10,7 @@ import {
   setDisplay
 } from './utils'
 
-export const animateOnRemove = function (node, animationName, callback) {
+export const animateOnRemove = function (node, animationName, callback, animatedChildClass) {
   if (animationIsRunningOnParent(node)) return
 
   let animCls = {}
@@ -24,8 +24,18 @@ export const animateOnRemove = function (node, animationName, callback) {
 
   // 1. Clone DOM node, inject it and hide original
   const clone = node.cloneNode(true)
-  const { width, height } = getDimensions(node)
-  setDimensions(clone, width, height)
+  clone.setAttribute('data-isClone', '')
+
+  // If we animate a decendent we need to find that specific node
+  let animatedClone = clone
+  let animatedNode = node
+  if (animatedChildClass !== undefined) {
+    animatedNode = node.querySelector('.' + animatedChildClass)
+    animatedClone = clone.querySelector('.' + animatedChildClass)
+  }
+
+  const { width, height } = getDimensions(animatedNode)
+  setDimensions(animatedClone, width, height)
   addClassName(clone, animCls.start)
   // Leaving original element so it can be removed in the normal way
   setDisplay(node, 'none !important')
@@ -36,9 +46,9 @@ export const animateOnRemove = function (node, animationName, callback) {
 
   // 3. Set an animation listener, code at end
   // Needs to be done after activating so timeout is calculated correctly
-  registerTransitionListener(clone, function () {
+  registerTransitionListener(animatedClone, function () {
     // *** Cleanup ***
-    callback && callback(clone)
+    callback && callback(animatedClone)
     clone.remove()
   })
 
@@ -46,11 +56,11 @@ export const animateOnRemove = function (node, animationName, callback) {
   setTimeout(() => {
     addClassName(clone, animCls.end)
     removeClassName(clone, animCls.start)
-    clearDimensions(clone)
+    clearDimensions(animatedClone)
   }, 5)
 }
 
-export const animateOnAdd = function (node, animationName, callback) {
+export const animateOnAdd = function (node, animationName, callback, animatedChildClass) {
   if (animationIsRunningOnParent(node)) return
 
   let animCls = {}
@@ -63,7 +73,13 @@ export const animateOnAdd = function (node, animationName, callback) {
   }
 
   // 1. Get height and set start of animation
-  const { width, height } = getDimensions(node)
+  // If we animate a decendent we need to find that specific node
+  let animatedNode = node
+  if (animatedChildClass !== undefined) {
+    animatedNode = node.querySelector('.' + animatedChildClass)
+  }
+  
+  const { width, height } = getDimensions(animatedNode)
   addClassName(node, animCls.start)
   forceReflow()
 
@@ -72,20 +88,20 @@ export const animateOnAdd = function (node, animationName, callback) {
 
   // 3. Set an animation listener, code at end
   // Needs to be done after activating so timeout is calculated correctly
-  registerTransitionListener([node, node.children[0]], function () {
+  registerTransitionListener(animatedNode, function () {
     // *** Cleanup ***
     // 5. Remove the element
-    clearDimensions(node)
+    clearDimensions(animatedNode)
     removeClassName(node, animCls.active)
     removeClassName(node, animCls.end)
     
     // 6. Call callback to allow stuff to happen
-    callback && callback(node)
+    callback && callback(animatedNode)
   })
 
   // 4. Activate target state
   setTimeout(() => {
-    setDimensions(node, width, height)
+    setDimensions(animatedNode, width, height)
     removeClassName(node, animCls.start)
     addClassName(node, animCls.end)
   }, 5)

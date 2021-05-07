@@ -10,13 +10,13 @@ function OriginalAnimated ({ domRef, el, tag, children, ...attrs}) {
   )
 }
 
-function Animated ({ domRef, prefix, onDidEnter, onDidLeave, ...attrs}) {
+function Animated ({ animatedChildClass, domRef, prefix, onDidEnter, onDidLeave, ...attrs}) {
   // I can't pass the ref callback through the ref attr so using domRef as
   // a work around.
   return <OriginalAnimated {...attrs}
     domRef={domRef}
-    onComponentDidMount={(dom) => animateOnAdd(dom, prefix, onDidEnter)}
-    onComponentWillUnmount={(dom) => animateOnRemove(dom, prefix, onDidLeave)} />
+    onComponentDidMount={(dom) => animateOnAdd(dom, prefix, onDidEnter, animatedChildClass)}
+    onComponentWillUnmount={(dom) => animateOnRemove(dom, prefix, onDidLeave, animatedChildClass)} />
 }
 
 export default Animated
