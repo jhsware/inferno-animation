@@ -79,11 +79,11 @@ export function animationIsRunningOnParent(node) {
   return (node.closest && node.closest('.InfernoAnimation--noAnim'))
 }
 
-function _getMaxTransitionDuration (/* add nodes as args*/) {
+function _getMaxTransitionDuration (nodes) {
   let nrofTransitions = 0
   let maxDuration = 0
-  for (let i=0; i < arguments.length; i++) {
-    const node = arguments[i]
+  for (let i=0; i < nodes.length; i++) {
+    const node = nodes[i]
     if (!node) continue
 
     const cs = window.getComputedStyle(node)
@@ -151,7 +151,7 @@ export function registerTransitionListener(nodes, callback, noTimeout) {
   /**
    * Here comes the transition event listener
    */ 
-  let { nrofTransitions: nrofTransitionsLeft, maxDuration } = _getMaxTransitionDuration.apply(this, nodes)
+  let { nrofTransitions: nrofTransitionsLeft, maxDuration } = _getMaxTransitionDuration(nodes)
   let done = false
 
   function onTransitionEnd (event) {
