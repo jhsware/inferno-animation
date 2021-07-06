@@ -1,6 +1,6 @@
 {
   "name": "inferno-animation",
-  "version": "7.5.0",
+  "version": "7.5.1",
   "description": "Library of animation helpers for Inferno components",
   "main": "dist/cjs/index.js",
   "umd:main": "dist/umd/index.js",
