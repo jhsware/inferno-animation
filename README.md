@@ -1,7 +1,7 @@
 # inferno-animation
 [![gzip size](http://img.badgesize.io/https://unpkg.com/inferno-animation/dist/cjs/index.min.js?compression=gzip)](https://unpkg.com/inferno-animation/dist/cjs/index.min.js)
 
-NOTE! As of Inferno 8.0 there is native support for animations. The package inferno-animation will be part of [the core repos](https://github.com/infernojs/inferno/tree/master/packages/inferno-animation) and performance will be greatly improved. Only minor changes are required to migrate. Code examples can be found in the [animation demos](https://github.com/infernojs/inferno/tree/master/docs)
+**NOTE! As of Inferno 8.0 there is native support for animations. The package inferno-animation will be part of [the core repos](https://github.com/infernojs/inferno/tree/master/packages/inferno-animation) and performance will be greatly improved.** Only minor changes are required to migrate. Code examples can be found in the [animation demos](https://github.com/infernojs/inferno/tree/master/docs)
 
 ## Compatibility
 inferno-animation 7.x supports Inferno v7
